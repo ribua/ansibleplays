@@ -1,0 +1,19 @@
+- name: Configure Interface with IP Address
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Assign IP to Interface
+      cisco.ios.ios_config:
+        lines:
+          - ip address 192.168.100.1 255.255.255.0
+          - no shutdown
+        parents: interface GigabitEthernet0/1  # Change to your interface
+
+    - name: Verify Configuration
+      cisco.ios.ios_command:
+        commands: show ip interface brief
+      register: interfaces_output
+
+    - name: Display Updated Interface Configuration
+      debug:
+        msg: "{{ interfaces_output.stdout_lines }}"
