@@ -1,0 +1,12 @@
+- name: Check Cisco IOS Version
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Run show version
+      cisco.ios.ios_command:
+        commands: show version
+      register: version_output
+
+    - name: Display IOS Version
+      debug:
+        msg: "{{ version_output.stdout_lines[0] }}"
