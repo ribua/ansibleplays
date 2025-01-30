@@ -1,0 +1,13 @@
+- name: Listen to Kafka and trigger playbook
+  hosts: localhost
+  sources:
+    - name: Listen to Kafka
+      ansible.eda.kafka:
+        host: "localhost:9092"
+        topic: "network-events"
+  rules:
+    - name: Run playbook when interface goes down
+      condition: event.message is search("changed state to down")
+      action:
+        run_playbook:
+          name: remediate_network_down.yml

@@ -1,0 +1,10 @@
+- name: Bring Arista interface up
+  hosts: all  # Change to your inventory group
+  gather_facts: no
+  tasks:
+    - name: Enable interface on Arista EOS
+      arista.eos.eos_config:
+        lines:
+          - no shutdown
+        parents: interface Ethernet1
+
