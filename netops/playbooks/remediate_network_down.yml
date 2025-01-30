@@ -1,5 +1,6 @@
 - name: Bring Arista interface up
   hosts: all  # Change to your inventory group
+  become: true
   gather_facts: no
   tasks:
     - name: Enable interface on Arista EOS
