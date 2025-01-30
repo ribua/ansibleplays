@@ -9,5 +9,6 @@
     - name: Run playbook when interface goes down
       condition: event.message is search("changed state to down")
       action:
-        run_playbook:
-          name: remediate_network_down.yml
+        run_job_template:
+          name: arista8
+          organization: Default
