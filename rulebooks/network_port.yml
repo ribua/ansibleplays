@@ -10,7 +10,7 @@
         verify_mode: CERT_OPTIONAL
   rules:
     - name: "Run playbook when interface goes down"
-      condition: event.body.msg is search("changed state to down")
+      condition: event.body.structured.msg is search("changed state to down")
       actions:
         run_job_template:
           name: "arista8"
