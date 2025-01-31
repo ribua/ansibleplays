@@ -6,6 +6,7 @@
         host: "192.168.124.58"
         port: "9092"
         topic: "network-events"
+        check_hostname: false
   rules:
     - name: Run playbook when interface goes down
       condition: event.message is search("changed state to down")
