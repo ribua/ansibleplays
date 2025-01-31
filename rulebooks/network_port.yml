@@ -7,7 +7,7 @@
         topic: "network-events"
   rules:
     - name: Run playbook when interface goes down
-      condition: event.message is defined and event.message is search("changed state to down")
+      condition: event.message | default('') is search("changed state to down")
       action:
         run_job_template:
           name: arista8
