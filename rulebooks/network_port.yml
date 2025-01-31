@@ -8,7 +8,7 @@
         topic: "network-events"
         check_hostname: false
   rules:
-    - name: "Run playbook when interface goes down"
+    - name: "Port is down"
       condition: event.body.message is search("changed state to down")
       action:
         run_job_template:
