@@ -3,6 +3,20 @@
   become: true
   gather_facts: no
   tasks:
+    - name: Download Network Config from Git
+      ansible.builtin.git: 
+        repo: https://github.com/ribua/ansibleplays/netops/switch_desired_conf.yml
+        dest: /tmp/srv
+        clone: true
+
+    - name: Include networking config variables
+      ansible.builtin.include_vars: /tmp/srv/switch_desired_conf.yml
+
+    - name: Merge Layer 2 interface Config
+      arista.eos.eos_l2_interfaces:
+        config: "{{ l2_interface_config }}"
+        state: merged
+
     - name: Enable interface on Arista EOS
       arista.eos.eos_config:
         lines:
