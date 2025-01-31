@@ -12,7 +12,7 @@
         debug:
         msg: "Received event: {{ event }}"
     - name: Run playbook when interface goes down
-      condition: "'changed state to down' in event.message"
+      condition: event.message is search("changed state to down")
         run_job_template:
           name: arista8
           organization: Default
