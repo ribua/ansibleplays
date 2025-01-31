@@ -6,13 +6,9 @@
         host: "localhost:9092"
         topic: "network-events"
   rules:
-    - name: Debug Event Data
-      condition: true
-      action:
-        debug:
-        msg: "Received event: {{ event }}"
     - name: Run playbook when interface goes down
       condition: event.message is search("changed state to down")
+      action:
         run_job_template:
           name: arista8
           organization: Default
