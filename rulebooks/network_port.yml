@@ -7,10 +7,11 @@
         port: "9092"
         topic: "network-events"
         check_hostname: false
+        verify_mode: CERT_OPTIONAL
   rules:
-    - name: Run playbook when interface goes down
-      condition: 'event.message is search("changed state to down")'
-      action:
+    - name: "Run playbook when interface goes down"
+      condition: event.body.msg is search("changed state to down")
+      actions:
         run_job_template:
-          name: arista8
-          organization: Default
+          name: "arista8"
+          organization: "Default"
