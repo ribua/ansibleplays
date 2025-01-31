@@ -5,7 +5,7 @@
   tasks:
     - name: Download Network Config from Git
       ansible.builtin.git: 
-        repo: https://github.com/ribua/ansibleplays/netops/switch_desired_conf.yml
+        repo: https://github.com/ribua/ansibleplays.git
         dest: /tmp/srv
         clone: true
 
