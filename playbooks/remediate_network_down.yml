@@ -1,5 +1,5 @@
 - name: Bring Arista interface up
-  hosts: "{{ ansible_eda['event']['body']['host'] | default('eos') }}"
+  hosts: "{{ ansible_eda['event']['body']['source_ip'] | default('eos') }}"
   become: true
   gather_facts: no
   tasks:
