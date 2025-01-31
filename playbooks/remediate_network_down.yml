@@ -10,7 +10,7 @@
         clone: true
 
     - name: Include networking config variables
-      ansible.builtin.include_vars: /tmp/srv/switch_desired_conf.yml
+      ansible.builtin.include_vars: /tmp/srv/netops/switch_desired_conf.yml
 
     - name: Merge Layer 2 interface Config
       arista.eos.eos_l2_interfaces:
