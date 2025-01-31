@@ -7,7 +7,6 @@
         port: "9092"
         topic: "network-events"
         check_hostname: false
-        verify_mode: CERT_OPTIONAL
   rules:
     - name: "Run playbook when interface goes down"
       condition: event.body.structured.msg is search("changed state to down")
