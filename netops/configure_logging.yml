@@ -1,0 +1,16 @@
+- name: Configure Logging on Devices
+  hosts: all  # Change to your inventory group
+  become: true
+  gather_facts: no
+
+  tasks:
+    - name: Configure syslog settings
+      arista.eos.eos_config:
+        lines:
+          - logging host {{ syslog_server }}
+          - logging level all info
+          - logging console informational
+          - logging monitor informational
+          - logging buffered 1000000
+          - service timestamps log datetime localtime
+        save_when: always

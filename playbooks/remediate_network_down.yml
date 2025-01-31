@@ -1,5 +1,5 @@
 - name: Bring Arista interface up
-  hosts: all  # Change to your inventory group
+  hosts: "{{ ansible_eda['event']['body']['tags']['source'] | default('eos') }}"
   become: true
   gather_facts: no
   tasks:
