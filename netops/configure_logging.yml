@@ -12,5 +12,4 @@
           - logging console informational
           - logging monitor informational
           - logging buffered 1000000
-          - service timestamps log datetime localtime
         save_when: always
