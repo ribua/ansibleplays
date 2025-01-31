@@ -9,7 +9,7 @@
         check_hostname: false
   rules:
     - name: "Run playbook when interface goes down"
-      condition: event.body.structured.msg is search("changed state to down")
+      condition: event.message is search("changed state to down")
       action:
         run_job_template:
           name: "arista8"
