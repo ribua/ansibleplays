@@ -3,7 +3,7 @@
   sources:
     - name: Listen to Kafka
       ansible.eda.kafka:
-        host: "localhost:9092"
+        host: "192.168.124.58:9092"
         topic: "network-events"
   rules:
     - name: Run playbook when interface goes down
