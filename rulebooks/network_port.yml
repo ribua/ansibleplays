@@ -6,6 +6,11 @@
         host: "localhost:9092"
         topic: "network-events"
   rules:
+    - name: Debug Event Data
+      condition: true
+      action:
+        debug:
+        msg: "Received event: {{ event }}"
     - name: Run playbook when interface goes down
       condition: "'changed state to down' in event.message"
         run_job_template:
