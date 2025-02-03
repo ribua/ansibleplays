@@ -1,0 +1,23 @@
+---
+
+- name: Add CI 
+  hosts: localhost
+  connection: local
+  collections:
+    - servicenow.itsm
+
+  tasks:
+    - name: Create/Update CI
+      servicenow.itsm.configuration_item:
+        name: arista1
+        assigned_to: admin
+        environment: test
+        instance:
+          host: "{{ host }}"
+          username: "{{ username }}"
+          password: "{{ password }}"
+      register: configuration_item
+
+    - name: debug
+      debug:
+        msg: "{{ configuration_item }}"  
