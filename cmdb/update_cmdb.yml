@@ -3,6 +3,7 @@
 - name: Add CI 
   hosts: localhost
   connection: local
+  gather_facts: false
   collections:
     - servicenow.itsm
 
