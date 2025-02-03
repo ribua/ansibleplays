@@ -17,6 +17,7 @@
         asset_tag: P1000613
         serial_number: ECE-164-E10834-NO
         ip_address: 172.20.20.2
+        manufacturer: Arista
         other:
           model_number: BL465C G7
         instance:
