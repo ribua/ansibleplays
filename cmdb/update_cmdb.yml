@@ -10,9 +10,14 @@
   tasks:
     - name: Create/Update CI
       servicenow.itsm.configuration_item:
-        name: arista1
+        name: Arista2
         assigned_to: admin
         environment: test
+        category: Network
+        asset_tag: P1000613
+        serial_number: ECE-164-E10834-NO
+        other:
+          model_number: BL465C G7
         instance:
           host: "{{ host }}"
           username: "{{ username }}"
@@ -22,3 +27,5 @@
     - name: debug
       debug:
         msg: "{{ configuration_item }}"  
+
+    
