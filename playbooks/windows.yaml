@@ -8,13 +8,3 @@
     - name: Get Windows hostname
       ansible.windows.win_shell: hostname
       
-    - name: Get product id and product key
-      ansible.windows.win_product_facts:
-
-    - name: Display Windows edition
-      debug:
-        var: ansible_os_license_edition
-
-    - name: Display Windows license status
-      debug:
-       var: ansible_os_license_status
