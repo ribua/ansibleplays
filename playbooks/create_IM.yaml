@@ -18,7 +18,7 @@
       urgency: 2
       impact: 2
       description: 
-        "{{ description }}"
+        "Network port is down on device {{ ansible_eda['event']['body']['source_ip'] | default('eos') }}"
       other:
         assigned_to: Andrew Och
         caller_id: Network
