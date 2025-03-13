@@ -7,4 +7,9 @@
 
     - name: Get Windows hostname
       ansible.windows.win_shell: hostname
+
+    - name: Pause a service
+      ansible.windows.win_service:
+        name: Netlogon
+        state: paused
       
