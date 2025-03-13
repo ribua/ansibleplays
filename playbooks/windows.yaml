@@ -10,6 +10,6 @@
 
     - name: Pause a service
       ansible.windows.win_service:
-        name: Netlogon
-        state: paused
+        name: Windows Time
+        state: restarted
       
