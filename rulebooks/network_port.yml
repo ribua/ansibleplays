@@ -11,7 +11,7 @@
     - name: "Port is down"
       condition: event.body.message is search("changed state to down")
       action:
-        run_job_template:
-          name: "NetOPS-SNOW"
+        run_workflow_template:
+          name: "Bounce"
           organization: "Default"
           post_events: true
