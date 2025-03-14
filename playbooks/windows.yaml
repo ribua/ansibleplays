@@ -1,12 +1,9 @@
-- name: Test Connection to Windows Server
+- name: Configure Windows Server
   hosts: all
   gather_facts: false
   tasks:
     - name: Check connection with win_ping
       ansible.windows.win_ping:
-
-    - name: Get Windows hostname
-      ansible.windows.win_shell: hostname
 
     - name: Add User
       ansible.windows.win_user:
@@ -14,7 +11,7 @@
         password: "@ns1bl3"
         state: present
 
-    - name: DOwnload 7 zip package for installation
+    - name: Download 7 zip package for installation
       win_get_url:
         url: https://www.7-zip.org/a/7z2301-x64.exe  # Update URL if needed
         dest: C:\Windows\Temp\7z_setup.exe
