@@ -13,4 +13,11 @@
         name: ansible
         password: "@ns1bl3"
         state: present
+
+    - name: Download 7 zip package
+      ansible.windows.win_get_url:
+        url: https://www.7-zip.org/a/7z2409-x64.exe
+        dest: C:\Users\Administrator\Downloads
+        
+    
       
