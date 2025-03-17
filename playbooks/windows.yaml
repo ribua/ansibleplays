@@ -12,12 +12,12 @@
         state: present
 
     - name: Download 7 zip package for installation
-      win_get_url:
+      ansible.windows.win_get_url:
         url: https://www.7-zip.org/a/7z2301-x64.exe  # Update URL if needed
         dest: C:\Windows\Temp\7z_setup.exe
 
     - name: Install 7-Zip
-      win_package:
+      ansible.windows.win_package:
         path: C:\Windows\Temp\7z_setup.exe
         arguments: /S  # Silent installation
         state: present
