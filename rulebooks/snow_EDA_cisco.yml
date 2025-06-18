@@ -14,7 +14,7 @@
     
   rules:
     - name: Trigger playbook if incident is for Meraki device
-      condition: event.cmdb_ci.value == meraki_ci_sys_id
+      condition: event.cmdb_ci.value == "{{ meraki_ci_sys_id }}"
       action:
         run_playbook: 
           name: "Meraki - Switch Port"
