@@ -12,8 +12,9 @@
   rules:
     - name: Trigger playbook if incident is for Meraki device
       condition: event.cmdb_ci is defined
+      
       action:
         run_job_template: 
-          name: "Meraki - Switch Port"
-          organization: "Default"
+          name: Meraki - Switch Port
+          organization: Default
           post_events: true
