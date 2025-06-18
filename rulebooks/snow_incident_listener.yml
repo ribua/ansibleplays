@@ -14,5 +14,5 @@
       condition: event.cmdb_ci is  defined
       action:
         debug:
-          var: event
+          var: event.cmdb_ci.value
 
