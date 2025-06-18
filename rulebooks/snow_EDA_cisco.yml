@@ -8,13 +8,12 @@
         username: "{{ snow_username }}"
         password: "{{ snow_password }}"
         table: incident
-        interval: 1
-  vars:
+        interval: 1  vars:
     meraki_ci_sys_id: "4683f55893d6e6102a36f1d97bba1007"
     
   rules:
     - name: Trigger playbook if incident is for Meraki device
-      condition: event.cmdb_ci.value == "{{ meraki_ci_sys_id }}"
+      condition: event.cmdb_ci.value is search ("4683f55893d6e6102a36f1d97bba1007")
       action:
         run_job_template: 
           name: "Meraki - Switch Port"
