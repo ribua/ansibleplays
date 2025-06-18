@@ -19,4 +19,5 @@
         run_playbook: 
           name: "Meraki - Switch Port"
           organization: "Default"
+          inventory: "Demo Inventory"
           post_events: true
