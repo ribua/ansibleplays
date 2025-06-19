@@ -13,6 +13,9 @@
     - name: Debug everything else
       condition: event.cmdb_ci is  defined
       action:
-        debug:
-          var: event.cmdb_ci.value
+        run_job_template: 
+          name: Meraki - Switch Port
+          organization: Default
+          post_events: true
+   
 
