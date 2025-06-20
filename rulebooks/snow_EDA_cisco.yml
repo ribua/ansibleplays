@@ -14,7 +14,7 @@
       condition: 
         all:
           - event.cmdb_ci is defined
-          - event.cmdb_ci.value = '4683f55893d6e6102a36f1d97bba1007'
+          - event.cmdb_ci["value"] == "4683f55893d6e6102a36f1d97bba1007"
       
       action:
         run_job_template: 
