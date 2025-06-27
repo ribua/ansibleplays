@@ -12,6 +12,6 @@
       condition: event.body.SourceName == "FluentTest"
       action:
         run_workflow_template:
-          name: "Demo Job Template"
-          organization: "Default"
+          name: Demo Job Template
+          organization: Default
           post_events: true
