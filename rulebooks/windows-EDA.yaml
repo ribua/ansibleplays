@@ -9,7 +9,7 @@
         check_hostname: false
   rules:
     - name: "Identified Win Activity"
-      condition: event.body.message is search("EC2AMAZ-CTJ1AR7")
+      condition: event.body.SourceName == "FluentTest"
       action:
         run_workflow_template:
           name: "Demo Job Template"
