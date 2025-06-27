@@ -1,4 +1,4 @@
-- name: Listen to Kafka and trigger playbook
+windows- name: Listen to Kafka and trigger playbook
   hosts: localhost
   sources:
     - name: Listen to Kafka
@@ -11,7 +11,7 @@
     - name: "Identified Win Activity"
       condition: event.body.SourceName == "FluentTest"
       action:
-        run_workflow_template:
-          name: Demo Job Template
+        run_job_template: 
+          name: Meraki - Switch Port
           organization: Default
           post_events: true
