@@ -1,4 +1,5 @@
-windows- name: Listen to Kafka and trigger playbook
+---
+- name: Listen to Kafka and trigger playbook
   hosts: localhost
   sources:
     - name: Listen to Kafka
