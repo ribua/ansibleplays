@@ -4,7 +4,7 @@
   sources:
     - name: Listen to Kafka
       ansible.eda.kafka:
-        host: "13.211.203.3"
+        host: "54.252.124.154"
         port: "9092"
         topic: "windows-logs"
         check_hostname: false
