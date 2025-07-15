@@ -10,7 +10,10 @@
         check_hostname: false
   rules:
     - name: "Identified Win Activity"
-      condition: event.body is defined
+      condition: >
+        event.body.EventID == 4657 and
+        event.body.StringInserts[5] is defined and
+        event.body.StringInserts[11] != "True"
       action:
         debug:
           var: event
