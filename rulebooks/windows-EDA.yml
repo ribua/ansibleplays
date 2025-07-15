@@ -10,9 +10,11 @@
         check_hostname: false
   rules:
     - name: "Identified Win Activity"
-      condition: event.body.SourceName == "FluentTest"
+      condition: event is defined
       action:
-        run_job_template: 
-          name: Windows Registry
-          organization: Default
-          post_events: true
+        - debug:
+            var: event
+#        run_job_template: 
+#          name: Windows Registry
+#          organization: Default
+#          post_events: true
