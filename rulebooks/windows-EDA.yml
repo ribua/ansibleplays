@@ -15,9 +15,7 @@
         event.body.StringInserts[5] is defined and
         event.body.StringInserts[11] != "True"
       action:
-        debug:
-          var: event
-#        run_job_template: 
-#          name: Windows Registry
-#          organization: Default
-#          post_events: true
+        run_job_template: 
+          name: Windows Registry
+          organization: Default
+          post_events: true
