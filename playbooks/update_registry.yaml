@@ -8,6 +8,6 @@
   tasks:
    - name: Update Windows update by creating 
      ansible.windows.win_regedit:
-      path: HKEY_CURRENT_USER\Software\TestKey
+      path: HKCU:\Software\TestKey
       name: TestValue
       data: True
