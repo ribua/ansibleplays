@@ -1,0 +1,13 @@
+---
+- name: Registry Update
+  hosts: "all"
+  gather_facts: false
+  collections:
+   - ansible.windows
+  
+  tasks:
+   - name: Update Windows update by creating 
+     ansible.windows.win_regedit:
+      path: HKEY_CURRENT_USER\Software\TestKey
+      name: TestValue
+      data: True
