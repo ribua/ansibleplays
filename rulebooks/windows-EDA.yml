@@ -13,6 +13,6 @@
       condition: event.body.SourceName == "FluentTest"
       action:
         run_job_template: 
-          name: Demo Job Template
+          name: Windows Registry
           organization: Default
           post_events: true
