@@ -12,8 +12,8 @@
     - name: "Identified Win Activity"
       condition: event is defined
       action:
-        - debug:
-            var: event
+        debug:
+          var: event
 #        run_job_template: 
 #          name: Windows Registry
 #          organization: Default
