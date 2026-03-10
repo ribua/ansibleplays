@@ -1,6 +1,7 @@
 ---
 - name: Install and start Apache HTTPD
   hosts: all
+  gather_facts: false
   become: yes
 
   tasks:
