@@ -1,5 +1,5 @@
 ---
-- name: Watch for new incidents in ServiceNow
+- name: ServiceNow Incident AI Analysis
   hosts: localhost
 
   sources:
@@ -10,12 +10,20 @@
           username: "{{ snow_user }}"
           password: "{{ snow_password }}"
         table: incident
-        interval: 1
+        interval: 5
         remote_servicenow_timezone: GMT
-        
+
   rules:
-    - name: Display full ServiceNow incident event
-      condition: event.sys_id is defined
+    - name: Send Incident to AI
+      condition: event.number is defined
       action:
-        print_event:
-          
+        run_job_template:
+          name: Ask AI
+          organization: Default
+          job_args:
+            extra_vars:
+              incident_number: "{{ event.number }}"
+              incident_sys_id: "{{ event.sys_id }}"
+              short_description: "{{ event.short_description }}"
+              description: "{{ event.description | default('') }}"
+              
