@@ -19,4 +19,4 @@
       condition: event.sys_id is defined
       action:
         debug:
-          msg: "{{ event }}"
+          
