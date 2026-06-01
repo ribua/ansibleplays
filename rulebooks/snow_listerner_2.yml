@@ -9,7 +9,7 @@
           host: https://dev190278.service-now.com
           username: admin
           password: Q^ivR95Z-lhP
-        table: incident
+        table: change_request
         interval: 1
         remote_servicenow_timezone: Australia/Melbourne
 
