@@ -1,0 +1,42 @@
+---
+- name: Send ServiceNow incident to LiteMaaS AI
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Ask AI for incident remediation guidance
+      ansible.builtin.uri:
+        url: "{{ ai_url }}"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ litemaas_api_key }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          model: "{{ ai_model }}"
+          messages:
+            - role: system
+              content: |
+                You are a Linux operations assistant. Provide safe remediation guidance only.
+                Do not recommend destructive commands unless clearly marked as risky.
+            - role: user
+              content: |
+                A ServiceNow incident was raised.
+
+                Incident Number: {{ incident_number | default('Unknown') }}
+                Short Description: {{ short_description | default('') }}
+                Description: {{ description | default('') }}
+
+                Please provide:
+                1. Likely cause
+                2. Commands to investigate
+                3. Safe remediation steps
+                4. When to escalate
+        body_format: json
+        return_content: true
+        status_code: 200
+      register: ai_response
+
+    - name: Display AI response
+      ansible.builtin.debug:
+        msg: "{{ ai_response.json.choices[0].message.content }}"
