@@ -6,9 +6,9 @@
     - name: Listen to ServiceNow
       servicenow.itsm.records:
         instance:
-          host:  "{{ snow_instance }}"
-          username: "{{ snow_username }}"
-          password: "{{ snow_password }}"
+          host: https://dev190278.service-now.com
+          username: admin
+          password: Q^ivR95Z-lhP
         table: incident
         interval: 1        
         timezone: Australia/Melbourne
