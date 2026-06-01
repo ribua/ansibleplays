@@ -4,12 +4,14 @@
 
   sources:
     - name: Listen to ServiceNow
-      cloin.eda.snow_records:
-        instance: "{{ snow_instance }}"
-        username: "{{ snow_username }}"
-        password: "{{ snow_password }}"
+      servicenow.itsm.records:
+        instance:
+          host:  "{{ snow_instance }}"
+          username: "{{ snow_username }}"
+          password: "{{ snow_password }}"
         table: incident
-        interval: 1
+        interval: 1        
+        timezone: Australia/Melbourne
 
   rules:
     - name: Display full ServiceNow incident event
