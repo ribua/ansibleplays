@@ -11,7 +11,7 @@
           password: "{{ snow_password }}"
         table: incident
         interval: 1
-        remote_servicenow_timezone: Australia/Melbourne
+        remote_servicenow_timezone: GMT
         
   rules:
     - name: Display full ServiceNow incident event
