@@ -16,7 +16,7 @@
 
   rules:
     - name: Display full ServiceNow incident event
-      condition: true
+      condition: event.sys_id is defined
       action:
         debug:
           msg: "{{ event }}"
