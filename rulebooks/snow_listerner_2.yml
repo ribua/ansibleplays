@@ -6,8 +6,8 @@
     - name: Listen to ServiceNow
       servicenow.itsm.records:
         instance:
-          host: https://dev190278.service-now.com
-          username: admin
+          host: "{{ snow_instance }}"
+          username: "{{ snow_user }}"
           password: "{{ snow_password }}"
         table: incident
         interval: 1
