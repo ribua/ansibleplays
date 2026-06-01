@@ -17,5 +17,5 @@
     - name: Display full ServiceNow incident event
       condition: event.sys_id is defined
       action:
-        debug:
+        print_event:
           
