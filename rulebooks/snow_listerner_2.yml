@@ -8,8 +8,8 @@
         instance:
           host: https://dev190278.service-now.com
           username: admin
-          password: Q^ivR95Z-lhP
-        table: change_request
+          password: "{{ snow_password }}"
+        table: incident
         interval: 1
         remote_servicenow_timezone: Australia/Melbourne
 
