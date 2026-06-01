@@ -11,7 +11,6 @@
           password: Q^ivR95Z-lhP
         table: incident
         interval: 1        
-        timezone: Australia/Melbourne
 
   rules:
     - name: Display full ServiceNow incident event
