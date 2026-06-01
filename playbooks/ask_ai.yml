@@ -4,7 +4,24 @@
   gather_facts: false
 
   tasks:
-    - name: Ask AI for incident remediation guidance
+    - name: Build incident prompt
+      ansible.builtin.set_fact:
+        incident_prompt: |
+          A ServiceNow incident was raised.
+
+          Incident Number: {{ snow_event.number | default('Unknown') }}
+          Short Description: {{ snow_event.short_description | default('') }}
+          Description: {{ snow_event.description | default('') }}
+          Priority: {{ snow_event.priority | default('') }}
+          State: {{ snow_event.state | default('') }}
+
+          Provide:
+          1. Likely cause
+          2. Commands to investigate
+          3. Safe remediation steps
+          4. When to escalate
+
+    - name: Send incident to LiteMaaS
       ansible.builtin.uri:
         url: "{{ ai_url }}"
         method: POST
@@ -17,26 +34,19 @@
           messages:
             - role: system
               content: |
-                You are a Linux operations assistant. Provide safe remediation guidance only.
-                Do not recommend destructive commands unless clearly marked as risky.
+                You are a Linux SRE assistant.
+                Only answer based on the ServiceNow incident details.
+                If the incident mentions /tmp full, disk full, filesystem full,
+                or 100% usage, give Linux filesystem troubleshooting steps.
+                Do not recommend destructive commands unless marked risky.
             - role: user
-              content: |
-                A ServiceNow incident was raised.
-
-                Incident Number: {{ incident_number | default('Unknown') }}
-                Short Description: {{ short_description | default('') }}
-                Description: {{ description | default('') }}
-
-                Please provide:
-                1. Likely cause
-                2. Commands to investigate
-                3. Safe remediation steps
-                4. When to escalate
-        body_format: json
+              content: "{{ incident_prompt }}"
         return_content: true
         status_code: 200
       register: ai_response
+      no_log: false
 
-    - name: Display AI response
+    - name: Display AI recommendation
       ansible.builtin.debug:
         msg: "{{ ai_response.json.choices[0].message.content }}"
+  
