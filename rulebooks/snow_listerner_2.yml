@@ -21,9 +21,5 @@
           name: Ask AI
           organization: Default
           job_args:
-            extra_vars:
-              incident_number: "{{ event.number }}"
-              incident_sys_id: "{{ event.sys_id }}"
-              short_description: "{{ event.short_description }}"
-              description: "{{ event.description | default('') }}"
-              
+            extra_vars:             
+              snow_event: "{{ event }}"
