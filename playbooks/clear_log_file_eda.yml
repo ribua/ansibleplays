@@ -1,0 +1,63 @@
+---
+- name: Approved remediation - remove /var/log/apps and close ServiceNow incident
+  hosts: "{{ target_host }}"
+  become: true
+  gather_facts: false
+
+  vars:
+    approved_log_file: /var/log/apps
+
+  tasks:
+    - name: Check filesystem usage before cleanup
+      ansible.builtin.command:
+        cmd: df -h /
+      register: before_df
+      changed_when: false
+
+    - name: Check approved log file
+      ansible.builtin.stat:
+        path: "{{ approved_log_file }}"
+      register: apps_log
+
+    - name: Remove approved log file
+      ansible.builtin.file:
+        path: "{{ approved_log_file }}"
+        state: absent
+      when:
+        - apps_log.stat.exists
+        - apps_log.stat.isreg | default(false)
+
+    - name: Recreate approved log file empty
+      ansible.builtin.file:
+        path: "{{ approved_log_file }}"
+        state: touch
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Check filesystem usage after cleanup
+      ansible.builtin.command:
+        cmd: df -h /
+      register: after_df
+      changed_when: false
+
+    - name: Close ServiceNow incident
+      servicenow.itsm.incident:
+        instance:
+          host: "{{ snow_host }}"
+          username: "{{ snow_username }}"
+          password: "{{ snow_password }}"
+        sys_id: "{{ incident_sys_id }}"
+        state: resolved
+        close_code: "Solved by Automation"
+        close_notes: |
+          Approved automated remediation completed.
+
+          Removed and recreated approved file:
+          {{ approved_log_file }}
+
+          Before:
+          {{ before_df.stdout }}
+
+          After:
+          {{ after_df.stdout }}
