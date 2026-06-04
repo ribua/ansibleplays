@@ -1,0 +1,24 @@
+---
+- name: Receive Prometheus alerts and create ServiceNow incident
+  hosts: localhost
+
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5000
+
+  rules:
+    - name: Create ServiceNow incident from firing alert
+      condition: event.payload.status == "firing"
+      action:
+        run_job_template:
+          name: Create ServiceNow Incident from Prometheus
+          organization: Default
+          job_args:
+            extra_vars:
+              alert_name: "{{ event.payload.alerts[0].labels.alertname }}"
+              instance: "{{ event.payload.alerts[0].labels.instance }}"
+              mountpoint: "{{ event.payload.alerts[0].labels.mountpoint }}"
+              severity: "{{ event.payload.alerts[0].labels.severity }}"
+              summary: "{{ event.payload.alerts[0].annotations.summary }}"
+              description: "{{ event.payload.alerts[0].annotations.description }}"
