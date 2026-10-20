@@ -1,0 +1,42 @@
+
+---
+- name: Install and configure Apache on RHEL EC2
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Install Apache HTTP Server
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+
+    - name: Start and enable Apache service
+      ansible.builtin.systemd_service:
+        name: httpd
+        state: started
+        enabled: true
+
+    - name: Create a sample index page
+      ansible.builtin.copy:
+        dest: /var/www/html/index.html
+        content: |
+          <html>
+          <body>
+            <h1>Welcome to Apache on AWS RHEL!</h1>
+            <p>Configured using Red Hat Ansible Automation Platform</p>
+          </body>
+          </html>
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Verify Apache responds locally
+      ansible.builtin.uri:
+        url: http://127.0.0.1
+        status_code: 200
+      register: apache_check
+
+    - name: Display Apache status
+      ansible.builtin.debug:
+        msg: "Apache is running on {{ inventory_hostname }} - HTTP {{ apache_check.status }}"
