@@ -1,0 +1,116 @@
+
+---
+- name: Provision EC2 instance on AWS
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Validate required input variables
+      ansible.builtin.assert:
+        that:
+          - aws_region is defined
+          - instance_name is defined
+          - instance_type is defined
+          - subnet_id is defined
+          - security_group_id is defined
+          - key_name is defined
+        fail_msg: "Missing required AWS EC2 variables"
+
+    - name: Discover RHEL AMI
+      amazon.aws.ec2_ami_info:
+        region: "{{ aws_region }}"
+        owners:
+          - "309956199498"
+        filters:
+          name: "{{ ami_name_filter | default('RHEL-9*_HVM-*-x86_64-*-Hourly*-GP*') }}"
+          architecture: x86_64
+          state: available
+      register: ami_info
+      when: ami_id | default('') | length == 0
+
+    - name: Validate discovered AMIs
+      ansible.builtin.assert:
+        that:
+          - ami_info.images | length > 0
+        fail_msg: "No matching RHEL AMI found"
+      when: ami_id | default('') | length == 0
+
+    - name: Select AMI
+      ansible.builtin.set_fact:
+        selected_ami: >-
+          {{
+            ami_id
+            if (ami_id | default('') | length > 0)
+            else
+            (
+              ami_info.images
+              | sort(attribute='creation_date')
+              | last
+            ).image_id
+          }}
+
+    - name: Create EC2 instance
+      amazon.aws.ec2_instance:
+        region: "{{ aws_region }}"
+        name: "{{ instance_name }}"
+        image_id: "{{ selected_ami }}"
+        instance_type: "{{ instance_type }}"
+        key_name: "{{ key_name }}"
+
+        vpc_subnet_id: "{{ subnet_id }}"
+        security_group: "{{ security_group_id }}"
+
+        network_interfaces:
+          - assign_public_ip: "{{ assign_public_ip | default(true) | bool }}"
+
+        volumes:
+          - device_name: "{{ root_device_name | default('/dev/sda1') }}"
+            ebs:
+              volume_size: "{{ root_volume_size | default(20) | int }}"
+              volume_type: "{{ volume_type | default('gp3') }}"
+              encrypted: "{{ encrypt_root_volume | default(true) | bool }}"
+              delete_on_termination: true
+
+        metadata_options:
+          http_endpoint: enabled
+          http_tokens: required
+
+        cpu_credit_specification: standard
+        detailed_monitoring: false
+
+        state: running
+        exact_count: "{{ instance_count | default(1) | int }}"
+
+        filters:
+          "tag:Name": "{{ instance_name }}"
+          "tag:ManagedBy": "Ansible"
+          subnet-id: "{{ subnet_id }}"
+          instance-state-name:
+            - pending
+            - running
+
+        tags: "{{ instance_tags | default({}) | combine({
+          'Name': instance_name,
+          'ManagedBy': 'Ansible'
+        }) }}"
+
+        wait: true
+        wait_timeout: "{{ wait_timeout | default(600) | int }}"
+
+      register: ec2_result
+
+    - name: Display EC2 instance details
+      ansible.builtin.debug:
+        msg:
+          instance_id: "{{ item.instance_id }}"
+          instance_name: "{{ instance_name }}"
+          instance_type: "{{ item.instance_type }}"
+          region: "{{ aws_region }}"
+          ami_id: "{{ item.image_id }}"
+          private_ip: "{{ item.private_ip_address | default('N/A') }}"
+          public_ip: "{{ item.public_ip_address | default('N/A') }}"
+          state: "{{ item.state.name }}"
+      loop: "{{ ec2_result.instances }}"
+      loop_control:
+        label: "{{ item.instance_id }}"
