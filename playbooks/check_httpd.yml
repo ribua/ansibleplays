@@ -1,0 +1,41 @@
+
+---
+- name: Check Apache Health
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Check whether httpd is active
+      ansible.builtin.command:
+        cmd: systemctl is-active httpd
+      register: httpd_service
+      changed_when: false
+      failed_when: false
+
+    - name: Check Apache HTTP response
+      ansible.builtin.uri:
+        url: http://127.0.0.1/
+        status_code: 200
+        timeout: 5
+      register: httpd_response
+      failed_when: false
+
+    - name: Determine Apache health
+      ansible.builtin.set_fact:
+        httpd_healthy: >-
+          {{
+            httpd_service.stdout == 'active'
+            and (httpd_response.status | default(0)) == 200
+          }}
+
+    - name: Publish result to Orchestrator
+      ansible.builtin.set_stats:
+        data:
+          httpd_healthy: "{{ httpd_healthy | bool }}"
+        per_host: false
+        aggregate: false
+
+    - name: Display health status
+      ansible.builtin.debug:
+        msg: "Apache healthy: {{ httpd_healthy }}"
